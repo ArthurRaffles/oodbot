@@ -1,0 +1,10 @@
+{
+  "auth": {
+    "oodbote2f8220a": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  }
+}
