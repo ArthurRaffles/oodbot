@@ -20,6 +20,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
+import {Notes} from './notes';
 // import Chart from './Chart';
 // import Deposits from './Deposits';
 // import Orders from './Orders';
@@ -189,6 +190,7 @@ export default function Dashboard() {
             {/* Recent Orders */}
             <Grid item xs={12}>
               <Paper className={classes.paper}>
+                  <Notes />
                 {/* <Orders /> */}
               </Paper>
             </Grid>
