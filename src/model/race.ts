@@ -1,7 +1,8 @@
+import { DateTime } from 'luxon';
 
 export type Race = {
     id: string;
-    date: string;
+    start: DateTime;
     name: string;
-    seriesId: string;
+    seriesId?: string;
 }

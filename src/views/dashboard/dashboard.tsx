@@ -22,6 +22,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
 import {Notes} from './notes';
 import { Race } from '../race';
+import { PyContextProvider } from '../../contexts/pyContext';
 // import Chart from './Chart';
 // import Deposits from './Deposits';
 // import Orders from './Orders';
@@ -133,6 +134,7 @@ export function Dashboard() {
 
   return (
     <div className={classes.root}>
+      <PyContextProvider>
       <CssBaseline />
       <AppBar
         position="absolute"
@@ -211,6 +213,7 @@ export function Dashboard() {
           </Box>
         </Container>
       </main>
+      </PyContextProvider>
     </div>
   );
 }

@@ -3,6 +3,7 @@ import Link from "@material-ui/core/Link";
 import { makeStyles, StylesProvider } from "@material-ui/core/styles";
 
 import { RaceHeader } from "./raceHeader";
+import { EntrantInput } from "./entrantInput";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -20,6 +21,7 @@ export function Race() {
   return (
     <div className={classes.container}>
       <RaceHeader />
+      <EntrantInput />
     </div>
   );
 }
