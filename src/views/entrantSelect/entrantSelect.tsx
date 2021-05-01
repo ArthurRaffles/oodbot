@@ -1,12 +1,8 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import { Entrant, useEntrantContext } from "../../contexts/entrantContext";
+import { Entrant, useEntrantContext } from "../../contexts";
 
-// export type BoatType = {
-//   boatClass: string | null;
-//   pyNumber?: number;
-// };
 export type EntrantSelectProps = {
   value: Entrant | null;
   onChange: (entrant: Entrant | null) => void;
@@ -36,7 +32,7 @@ export const EntrantSelect: React.FC<EntrantSelectProps> = ({
         options={options as Entrant[]}
         style={{ width: 300 }}
         renderInput={(params: any) => (
-          <TextField {...params} label="Select User" variant="outlined" />
+          <TextField {...params} label="Enter racer name" variant="outlined" />
         )}
         getOptionLabel={(option) => {
           if (!option.fullname) {

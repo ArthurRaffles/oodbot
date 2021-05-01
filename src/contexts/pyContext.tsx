@@ -1,9 +1,6 @@
-import React, { createContext, useState } from "react";
+import React, { createContext } from "react";
+import { ClassHandicap } from "../model";
 const pyNumbersRaw: ClassHandicap[] = require("./py2021.json");
-export type ClassHandicap = {
-  className: string;
-  number?: number;
-};
 
 type PyContext = {
   getPyNumber(className: string | null): number | undefined;

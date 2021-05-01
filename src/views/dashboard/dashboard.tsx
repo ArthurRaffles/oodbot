@@ -20,7 +20,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
-import {Notes} from './notes';
 import { Race } from '../race';
 import { PyContextProvider } from '../../contexts/pyContext';
 // import Chart from './Chart';

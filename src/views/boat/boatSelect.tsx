@@ -1,7 +1,8 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import { ClassHandicap, usePyContext } from "../../contexts/pyContext";
+import { usePyContext } from "../../contexts/pyContext";
+import { ClassHandicap } from "../../model";
 
 export type BoatType = {
   boatClass: string | null;
@@ -30,7 +31,7 @@ export const BoatSelect: React.FC<BoatSelectProps> = ({ onChange, value }) => {
           <TextField {...params} label="Select Boat" variant="outlined" />
         )}
         getOptionLabel={(option) =>
-          `${option.className} ${option.number ? `(${option.number})` : ''}`
+          `${option.className} ${option.number ? `(${option.number})` : ""}`
         }
         renderOption={(option: ClassHandicap) => (
           <React.Fragment>

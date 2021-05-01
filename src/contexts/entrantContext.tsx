@@ -1,5 +1,4 @@
-import React, { createContext, useState } from "react";
-// const pyNumbersRaw: ClassHandicap[] = require("./py2021.json");
+import React, { createContext } from "react";
 export type Entrant = {
   fullname: string;
 };

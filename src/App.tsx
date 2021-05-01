@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import {Dashboard} from './views/dashboard';
 import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react'
