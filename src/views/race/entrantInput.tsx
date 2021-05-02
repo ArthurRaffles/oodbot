@@ -29,38 +29,45 @@ export type EntrantInputProps = {
 };
 
 export function EntrantInput(props: EntrantInputProps) {
-  const [boat, setBoat] = React.useState<ClassHandicap | null>({
-    className: "",
-    number: undefined,
-  });
-  const [entrant, setEntrant] = React.useState<Entrant | null>({
-    fullname: "",
-  });
-  const [date, setDate] = React.useState<string | null>(
+  const [boat, setBoat] = React.useState<ClassHandicap | null>(null);
+  const [entrant, setEntrant] = React.useState<Entrant | null>();
+  const [date, setDate] = React.useState<string>(
     DateTime.now().toFormat("HH:mm:ss")
   );
   const classes = useStyles();
 
   const handleDateChange: React.EventHandler<any> = (event) => {
     console.warn("setting date", event.target.value);
-    setDate(event.target.value);
+    if (event.target.value) {
+      setDate(event.target.value);
+    }
   };
   const handleBoatChange = (boat: ClassHandicap | null) => {
     console.warn("setting boat", boat);
-    setBoat(boat);
+    if (boat) {
+      setBoat(boat);
+    }
+  
   };
   const handleEntrantChange = (entrant: Entrant | null) => {
     console.warn("setting entrant", entrant);
-    setEntrant(entrant);
+    if (entrant) {
+      setEntrant(entrant);
+    }
+ 
   };
   const handleAddRacer = () => {
     const payload: RaceEntrant = RaceEntrant.create(
-      entrant?.fullname,
-      boat,
+      entrant?.fullname ?? '',
+      boat ?? {className: '', number: 1},
       date
     );
     console.warn("adding racer", payload);
     props.onChange(payload);
+    setBoat({className: '', number: 0});
+    setEntrant({fullname: ''});
+    setDate( DateTime.now().toFormat("HH:mm:ss"));
+
   };
   return (
     <React.Fragment>

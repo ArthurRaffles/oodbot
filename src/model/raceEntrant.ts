@@ -1,29 +1,39 @@
 import { createId } from "../utils";
 import { ClassHandicap } from "./class";
+import { AdjustedResult } from "./pyCalculator";
 
 export type RaceEntrant = {
   id: string;
-  fullname?: string;
-  boatClass?: string | null;
-  py?: number;
-  finishTime?: string | null;
+  fullname: string;
+  boatClass: string;
+  py: number;
+  finishTime: string;
+  elapsedSeconds?: number;
   correctedSeconds?: number;
 };
 
 export namespace RaceEntrant {
   export const create = (
-    fullname?: string,
-    boatClass?: ClassHandicap | null,
-    finishTime?: string | null,
-    correctedSeconds?: number
+    fullname: string,
+    boatClass: ClassHandicap,
+    finishTime: string
   ): RaceEntrant => {
     return {
       id: createId(),
       fullname,
-      boatClass: boatClass?.className,
-      py: boatClass?.number,
+      boatClass: boatClass.className,
+      py: boatClass.number,
       finishTime,
-      correctedSeconds
     };
+  };
+
+  export const withResult = (
+    entrant: RaceEntrant,
+    result: AdjustedResult
+  ): RaceEntrant => {
+    return {
+      ...entrant,
+      ...result
+    }
   };
 }

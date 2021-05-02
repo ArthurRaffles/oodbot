@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-
 import { RaceHeader } from "./raceHeader";
 import { EntrantInput } from "./entrantInput";
-import { useRaceContext } from "../../contexts/raceStateContext";
+import { RaceContext } from "../../contexts";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -16,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
 
 export function Race() {
   const classes = useStyles();
-  const {addRacer, createRace, selectedRace} = useRaceContext();
+  const { addRacer, createRace, selectedRace } = useContext(RaceContext);
   return (
     <div className={classes.container}>
       <RaceHeader

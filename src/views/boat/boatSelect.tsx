@@ -3,6 +3,7 @@ import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { usePyContext } from "../../contexts/pyContext";
 import { ClassHandicap } from "../../model";
+// import { FilterOptionsState } from "@material-ui/lab";
 
 export type BoatType = {
   boatClass: string | null;
@@ -38,6 +39,17 @@ export const BoatSelect: React.FC<BoatSelectProps> = ({ onChange, value }) => {
             {option.className} ({option.number})
           </React.Fragment>
         )}
+        // filterOptions={(
+        //   options: ClassHandicap[],
+        //   state: FilterOptionsState<any>
+        // ) => {
+        //   return options.filter((opt) =>
+        //     opt.className.includes(state.inputValue)
+        //   );
+        // }}
+        // getOptionSelected={(option: ClassHandicap, value: ClassHandicap) =>
+        //   option.className === value.className
+        // }
       />
     </React.Fragment>
   );

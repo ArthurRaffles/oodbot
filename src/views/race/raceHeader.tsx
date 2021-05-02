@@ -1,11 +1,9 @@
 import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import { DateTime } from "luxon";
 import Title from "../dashboard/title";
 import { Race } from "../../model";
 import Button from "@material-ui/core/Button";
-import { PinDropSharp } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   seeMore: {

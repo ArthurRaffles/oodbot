@@ -1,5 +1,5 @@
 export type ClassHandicap = {
     className: string;
-    number?: number;
+    number: number;
   };
   

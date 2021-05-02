@@ -1,10 +1,9 @@
-import { DateTime } from 'luxon';
 import { createId } from '../utils';
 import { RaceEntrant } from './raceEntrant';
 
 export type Race = {
     id: string;
-    start?: string;
+    start: string;
     name: string;
     seriesId?: string;
     entrants: RaceEntrant[];

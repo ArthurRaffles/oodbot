@@ -21,7 +21,8 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
 import { Race } from '../race';
-import { PyContextProvider } from '../../contexts/pyContext';
+import { PyContextProvider, RaceContextProvider } from '../../contexts';
+import RaceResultsView from '../raceResults/raceResultsView';
 // import Chart from './Chart';
 // import Deposits from './Deposits';
 // import Orders from './Orders';
@@ -134,6 +135,7 @@ export function Dashboard() {
   return (
     <div className={classes.root}>
       <PyContextProvider>
+      <RaceContextProvider>
       <CssBaseline />
       <AppBar
         position="absolute"
@@ -202,6 +204,7 @@ export function Dashboard() {
             {/* Recent Orders */}
             <Grid item xs={12}>
               <Paper className={classes.paper}>
+                <RaceResultsView />
                 {/* <Notes /> */}
                 {/* <Orders /> */}
               </Paper>
@@ -212,6 +215,7 @@ export function Dashboard() {
           </Box>
         </Container>
       </main>
+      </RaceContextProvider>
       </PyContextProvider>
     </div>
   );
