@@ -2,12 +2,11 @@ import { Race } from "../model";
 import { API } from "aws-amplify";
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { listRaces } from "../graphql/queries";
-import { createRace, createEntrant } from "../graphql/mutations";
+import { createRace, createEntrant, deleteRace } from "../graphql/mutations";
 
-const listEvents = {};
-const createEvent = {};
 export type RaceService = {
   saveRace(race: Race): Promise<any>;
+  deleteRace(race: Race): Promise<GraphQLResult>;
   fetchRaces(): Promise<Race[] | undefined>;
 };
 
@@ -49,6 +48,7 @@ export function raceService(): RaceService {
       });
       return foo;
     },
+
     async fetchRaces(): Promise<Race[] | undefined> {
       const apiData: GraphQLResult<RacesResponse> = (await API.graphql({
         query: listRaces,
@@ -56,5 +56,13 @@ export function raceService(): RaceService {
 
       return apiData.data?.listRaces?.items;
     },
+
+    async deleteRace(race: Race): Promise<GraphQLResult> {
+        return API.graphql({
+          query: deleteRace,
+          variables: { input: race },
+        }) as Promise<GraphQLResult>;
+
+      },
   };
 }

@@ -7,7 +7,6 @@ import { Button } from "@material-ui/core";
 const createColumns = (onDelete: (entrantId: string) => void): GridColDef[] => {
   console.warn("creatig cols", onDelete);
   return [
-   // { field: "id", headerName: "ID", width: 70 },
     { field: "fullname", headerName: "Name", width: 130 },
     { field: "boatClass", headerName: "Boat", width: 130 },
     { field: "py", headerName: "PY", width: 70 },
