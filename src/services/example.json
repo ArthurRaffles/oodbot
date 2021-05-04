@@ -1,0 +1,25 @@
+{
+  "entrants": [
+    {
+      "boatClass": "klj",
+      "correctedSeconds": 12132,
+      "elapsedSeconds": 12132,
+      "finishTime": 12132,
+      "id": "klj",
+      "py": 12132
+    },
+    {
+      "boatClass": "klj1",
+      "correctedSeconds": 12132,
+      "elapsedSeconds": 12132,
+      "finishTime": 12132,
+      "fullname": "klj",
+      "id": "klj",
+      "py": 12132
+    }
+  ],
+  "id": "klj",
+  "name": "klj",
+  "seriesId": "klj",
+  "start": 12132
+}

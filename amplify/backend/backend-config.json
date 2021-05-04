@@ -1,6 +1,6 @@
 {
   "auth": {
-    "oodbote2f8220a": {
+    "oodbot01b17e15": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
@@ -16,19 +16,13 @@
           "defaultAuthentication": {
             "authenticationType": "API_KEY",
             "apiKeyConfig": {
-              "apiKeyExpirationDays": 7,
-              "description": "demo"
+              "apiKeyExpirationDays": 365,
+              "description": "oodbot"
             }
           },
           "additionalAuthenticationProviders": []
         }
       }
-    }
-  },
-  "storage": {
-    "notesImages": {
-      "service": "S3",
-      "providerPlugin": "awscloudformation"
     }
   }
 }

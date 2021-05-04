@@ -1,9 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Title from "../dashboard/title";
 import { Race } from "../../model";
 import Button from "@material-ui/core/Button";
+import { RaceContext } from "../../contexts";
+import SaveIcon from '@material-ui/icons/Save';
 
 const useStyles = makeStyles((theme) => ({
   seeMore: {
@@ -17,6 +19,14 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
     width: 200,
   },
+  saveBtn: {
+    marginLeft: theme.spacing(1),
+    width: 250,
+  },
+  createBtn: {
+    marginLeft: theme.spacing(1),
+    width: 250,
+  },
 }));
 
 export type RaceHeaderProps = {
@@ -24,12 +34,15 @@ export type RaceHeaderProps = {
   createRace(name: string, start: string): void;
 };
 export function RaceHeader({ race, createRace }: RaceHeaderProps) {
+  const { saveRace, fetchRaces } = useContext(RaceContext);
   const [date, setDate] = React.useState(
     "2020-03-21T14:00"
     // DateTime.now().endOf("hour").minus(1).toFormat('yyyy-MM-ddThh:mm')
   );
   const [name, setName] = React.useState("");
   const classes = useStyles();
+
+ // fetchRaces();
 
   const handleDateChange: React.EventHandler<any> = (event) => {
     console.warn("setting date", event.target.value);
@@ -42,6 +55,11 @@ export function RaceHeader({ race, createRace }: RaceHeaderProps) {
 
   const handleCreate = () => {
     createRace(name, date);
+  };
+
+  const handleSave = () => {
+    console.warn("saving race..");
+    saveRace();
   };
   useEffect(() => {
     console.warn("effect in header ", race);
@@ -86,10 +104,22 @@ export function RaceHeader({ race, createRace }: RaceHeaderProps) {
         <Button
           variant="contained"
           color="primary"
+          className={classes.createBtn}
+          size="large"
           disabled={isDisabled}
           onClick={handleCreate}
         >
           Create
+        </Button>
+        <Button
+          className={classes.saveBtn}
+          variant="contained"
+          color="primary"
+          size="large"
+          startIcon={<SaveIcon />}
+          onClick={handleSave}
+        >
+          Save Race
         </Button>
       </div>
     </React.Fragment>

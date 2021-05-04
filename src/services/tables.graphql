@@ -1,0 +1,52 @@
+"""
+type Note @model {
+  id: ID!
+  name: String!
+  description: String
+  image: String
+}
+"""
+
+type Race
+@model
+@searchable {
+  id: ID!
+  name: String!
+  start: String!
+  seriesId: ID
+  entrants: [RaceEntrant] @connection (keyName:"byEntrant", fields:["id"])
+}
+
+type RaceEntrant 
+@model
+@key (name:"byEntrant", fields:["raceId"]) {
+  id: ID!
+  raceId: ID!
+  fullname: String!
+  boatClass: String!
+  py: Int!
+  finishTime: String!
+  elapsedSeconds: Float!
+  correctedSeconds: Float!
+}
+
+type Blog @model {
+  id: ID!
+  name: String!
+  posts: [Post] @connection(keyName: "byBlog", fields: ["id"])
+}
+
+type Post @model @key(name: "byBlog", fields: ["blogID"]) {
+  id: ID!
+  title: String!
+  blogID: ID!
+  blog: Blog @connection(fields: ["blogID"])
+  comments: [Comment] @connection(keyName: "byPost", fields: ["id"])
+}
+
+type Comment @model @key(name: "byPost", fields: ["postID", "content"]) {
+  id: ID!
+  postID: ID!
+  post: Post @connection(fields: ["postID"])
+  content: String!
+}

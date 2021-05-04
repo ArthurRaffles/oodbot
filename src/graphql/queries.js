@@ -1,30 +1,87 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getNote = /* GraphQL */ `
-  query GetNote($id: ID!) {
-    getNote(id: $id) {
+export const getRace = /* GraphQL */ `
+  query GetRace($id: ID!) {
+    getRace(id: $id) {
       id
       name
-      description
-      image
+      start
+      seriesId
+      entrants {
+        items {
+          id
+          raceID
+          fullname
+          boatClass
+          py
+          finishTime
+          elapsedSeconds
+          correctedSeconds
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
   }
 `;
-export const listNotes = /* GraphQL */ `
-  query ListNotes(
-    $filter: ModelNoteFilterInput
+export const listRaces = /* GraphQL */ `
+  query ListRaces(
+    $filter: ModelRaceFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listNotes(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listRaces(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         name
-        description
-        image
+        start
+        seriesId
+        entrants {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getEntrant = /* GraphQL */ `
+  query GetEntrant($id: ID!) {
+    getEntrant(id: $id) {
+      id
+      raceID
+      fullname
+      boatClass
+      py
+      finishTime
+      elapsedSeconds
+      correctedSeconds
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listEntrants = /* GraphQL */ `
+  query ListEntrants(
+    $filter: ModelEntrantFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listEntrants(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        raceID
+        fullname
+        boatClass
+        py
+        finishTime
+        elapsedSeconds
+        correctedSeconds
         createdAt
         updatedAt
       }

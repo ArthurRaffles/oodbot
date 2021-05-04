@@ -24,10 +24,15 @@ function createEntrantContext(): EntrantContext {
       return entrants;
     },
     saveEntrant(entrant: Entrant) {
-        entrants = [
-            ...entrants,
-            entrant
-        ]
+      if (
+        !entrants.find(
+          (ent) =>
+            ent.fullname.toLocaleUpperCase() ===
+            entrant.fullname.toLocaleUpperCase()
+        )
+      ) {
+        entrants = [...entrants, entrant];
+      }
     },
   };
 }

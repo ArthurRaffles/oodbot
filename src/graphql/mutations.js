@@ -1,46 +1,148 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createNote = /* GraphQL */ `
-  mutation CreateNote(
-    $input: CreateNoteInput!
-    $condition: ModelNoteConditionInput
+export const createRace = /* GraphQL */ `
+  mutation CreateRace(
+    $input: CreateRaceInput!
+    $condition: ModelRaceConditionInput
   ) {
-    createNote(input: $input, condition: $condition) {
+    createRace(input: $input, condition: $condition) {
       id
       name
-      description
-      image
+      start
+      seriesId
+      entrants {
+        items {
+          id
+          raceID
+          fullname
+          boatClass
+          py
+          finishTime
+          elapsedSeconds
+          correctedSeconds
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
   }
 `;
-export const updateNote = /* GraphQL */ `
-  mutation UpdateNote(
-    $input: UpdateNoteInput!
-    $condition: ModelNoteConditionInput
+export const updateRace = /* GraphQL */ `
+  mutation UpdateRace(
+    $input: UpdateRaceInput!
+    $condition: ModelRaceConditionInput
   ) {
-    updateNote(input: $input, condition: $condition) {
+    updateRace(input: $input, condition: $condition) {
       id
       name
-      description
-      image
+      start
+      seriesId
+      entrants {
+        items {
+          id
+          raceID
+          fullname
+          boatClass
+          py
+          finishTime
+          elapsedSeconds
+          correctedSeconds
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
   }
 `;
-export const deleteNote = /* GraphQL */ `
-  mutation DeleteNote(
-    $input: DeleteNoteInput!
-    $condition: ModelNoteConditionInput
+export const deleteRace = /* GraphQL */ `
+  mutation DeleteRace(
+    $input: DeleteRaceInput!
+    $condition: ModelRaceConditionInput
   ) {
-    deleteNote(input: $input, condition: $condition) {
+    deleteRace(input: $input, condition: $condition) {
       id
       name
-      description
-      image
+      start
+      seriesId
+      entrants {
+        items {
+          id
+          raceID
+          fullname
+          boatClass
+          py
+          finishTime
+          elapsedSeconds
+          correctedSeconds
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createEntrant = /* GraphQL */ `
+  mutation CreateEntrant(
+    $input: CreateEntrantInput!
+    $condition: ModelEntrantConditionInput
+  ) {
+    createEntrant(input: $input, condition: $condition) {
+      id
+      raceID
+      fullname
+      boatClass
+      py
+      finishTime
+      elapsedSeconds
+      correctedSeconds
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateEntrant = /* GraphQL */ `
+  mutation UpdateEntrant(
+    $input: UpdateEntrantInput!
+    $condition: ModelEntrantConditionInput
+  ) {
+    updateEntrant(input: $input, condition: $condition) {
+      id
+      raceID
+      fullname
+      boatClass
+      py
+      finishTime
+      elapsedSeconds
+      correctedSeconds
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteEntrant = /* GraphQL */ `
+  mutation DeleteEntrant(
+    $input: DeleteEntrantInput!
+    $condition: ModelEntrantConditionInput
+  ) {
+    deleteEntrant(input: $input, condition: $condition) {
+      id
+      raceID
+      fullname
+      boatClass
+      py
+      finishTime
+      elapsedSeconds
+      correctedSeconds
       createdAt
       updatedAt
     }

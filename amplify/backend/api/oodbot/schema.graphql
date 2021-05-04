@@ -1,6 +1,18 @@
-type Note @model {
+type Race @model {
   id: ID!
   name: String!
-  description: String
-  image: String
+  start: String!
+  seriesId: ID
+  entrants: [Entrant] @connection(keyName: "byEntrant", fields: ["id"])
+}
+
+type Entrant @model @key(name: "byEntrant", fields: ["raceID"]) {
+  id: ID!
+  raceID: ID!
+  fullname: String!
+  boatClass: String!
+  py: Int!
+  finishTime: String!
+  elapsedSeconds: Float!
+  correctedSeconds: Float!
 }

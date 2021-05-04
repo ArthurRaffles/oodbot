@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { API, Storage } from 'aws-amplify';
 import { GraphQLResult } from '@aws-amplify/api-graphql';
-import { listNotes } from '../../graphql/queries';
-import { createNote as createNoteMutation, deleteNote as deleteNoteMutation } from '../../graphql/mutations';
+// import { listNotes } from '../../graphql/queries';
+// import { createNote as createNoteMutation, deleteNote as deleteNoteMutation } from '../../graphql/mutations';
 
 const initialFormState: FormState = { name: '', description: '', image: '' }
-
 type NotesResponse = {
     listNotes: {
         items: any[]
@@ -29,20 +28,20 @@ export function Notes() {
   }, []);
 
   async function fetchNotes() {
-    const apiData: GraphQLResult<NotesResponse> = await API.graphql({ query: listNotes }) as GraphQLResult<NotesResponse>;
-    if (apiData?.data?.listNotes?.items) {
-        const notesFromAPI = apiData.data.listNotes.items;
-        await Promise.all(notesFromAPI.map(async note => {
-            if (note.image) {
-              const image = await Storage.get(note.image);
-              note.image = image;
-            }
-            return note;
-          }))
-        setNotes(apiData?.data.listNotes.items);
-    } else {
-        console.warn('eh! no notes');
-    }
+    // const apiData: GraphQLResult<NotesResponse> = await API.graphql({ query: listNotes }) as GraphQLResult<NotesResponse>;
+    // if (apiData?.data?.listNotes?.items) {
+    //     const notesFromAPI = apiData.data.listNotes.items;
+    //     await Promise.all(notesFromAPI.map(async note => {
+    //         if (note.image) {
+    //           const image = await Storage.get(note.image);
+    //           note.image = image;
+    //         }
+    //         return note;
+    //       }))
+    //     setNotes(apiData?.data.listNotes.items);
+    // } else {
+    //     console.warn('eh! no notes');
+    // }
     
   }
 
@@ -55,20 +54,20 @@ export function Notes() {
   }
 
   async function createNote() {
-    if (!formData.name || !formData.description) return;
-    await API.graphql({ query: createNoteMutation, variables: { input: formData } });
-    if (formData.image) {
-        const image = await Storage.get(formData.image);
-        formData.image = image as string;
-      }
-    setNotes([ ...notes, formData ]);
-    setFormData(initialFormState);
+    // if (!formData.name || !formData.description) return;
+    // await API.graphql({ query: createNoteMutation, variables: { input: formData } });
+    // if (formData.image) {
+    //     const image = await Storage.get(formData.image);
+    //     formData.image = image as string;
+    //   }
+    // setNotes([ ...notes, formData ]);
+    // setFormData(initialFormState);
   }
 
   async function deleteNote({ id }: Note) {
-    const newNotesArray = notes.filter(note => note.id !== id);
-    setNotes(newNotesArray);
-    await API.graphql({ query: deleteNoteMutation, variables: { input: { id } }});
+    // const newNotesArray = notes.filter(note => note.id !== id);
+    // setNotes(newNotesArray);
+    // await API.graphql({ query: deleteNoteMutation, variables: { input: { id } }});
   }
 
   return (
