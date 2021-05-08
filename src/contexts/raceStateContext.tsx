@@ -3,23 +3,25 @@ import { calculateAdjustedTime, Race, RaceEntrant } from "../model";
 import { raceService } from "../services";
 
 type RaceContextType = {
-  createRace: (name: string, start: string) => void;
+  createRace: (name: string, start: string) => Race;
   deleteRace: (id: string) => void;
   addRacer: (entrant: RaceEntrant, raceId?: string) => void;
   deleteRacer: (entrantId: string, raceId: string) => void;
   saveRace: () => void;
   fetchRaces: () => void;
+  selectRace: (raceId: string) => Race | undefined | null;
   selectedRace?: Race | null;
   races: Race[];
 };
 
 export const RaceContext = createContext<RaceContextType>({
-  createRace: (name: string, start: string) => {},
+    createRace: (name: string, start: string) => ({} as Race),
   deleteRace: (id: string) => {},
   addRacer: (entrant: RaceEntrant, raceId?: string) => {},
   deleteRacer: (entrantId: string, raceId: string) => {},
   saveRace: () => {},
   fetchRaces: () => {},
+  selectRace: (raceId: string) => ({} as Race),
   races: [],
 });
 
@@ -50,13 +52,43 @@ export const RaceContextProvider = ({ children }: ProviderProps) => {
     setSelectedRace(newRaces.find((r) => r.id === raceId));
   };
 
-  const createRace = (name: string, start: string) => {
+  const createRace = (name: string, start: string): Race => {
     const newRace = Race.create(name, start);
     console.warn("creating race ", name, start);
     setRaces([...races, newRace]);
     setSelectedRace(newRace);
+    return newRace;
   };
 
+  const selectRace = (raceId: string): Race | null | undefined => {
+    // const theRace = races.find((r) => r.id === raceId);
+    console.warn("selectRace race ", raceId);
+    service.fetchRace(raceId).then(race => {
+      if (race) {
+        setSelectedRace(race);
+      }
+    })
+    // if (raceId) {
+    //     service.fetchEntrants(raceId)
+    //         .then(entrants => {
+    //             console.warn('in context entrants', entrants);
+    //             const updatedRaces = races.map(race => {
+    //                 if(race.id === raceId) {
+    //                     return {
+    //                         ...race,
+    //                         entrants: entrants ?? []
+    //                     };
+    //                 }
+    //                 return race;
+    //             });
+    //             setRaces(updatedRaces);
+    //             const theRace = races.find((r) => r.id === raceId);
+    //             setSelectedRace(theRace);
+    //         }); 
+    // }
+
+    return selectedRace;
+  }
   const deleteRace = (raceId: string) => {
     console.warn("deleting race ", raceId);
     const theRace = races.find((r) => r.id === raceId);
@@ -153,6 +185,8 @@ export const RaceContextProvider = ({ children }: ProviderProps) => {
         selectedRace,
         saveRace,
         fetchRaces,
+        selectRace,
+        
       }}
     >
       {children}

@@ -51,7 +51,7 @@ const createColumns = (onDelete: (entrantId: string) => void): GridColDef[] => {
 export default function RaceResultsView() {
   const { selectedRace, deleteRacer } = useContext(RaceContext);
   const entrants = selectedRace?.entrants ?? [];
-  console.warn("grid entrants", selectedRace);
+  console.warn("grid entrants", entrants);
 
   const cols = React.useMemo(() => {
     const del = (entrantId: string) =>

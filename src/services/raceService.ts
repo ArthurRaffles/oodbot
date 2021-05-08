@@ -1,13 +1,15 @@
-import { Race } from "../model";
-import { API } from "aws-amplify";
+import { Race, RaceEntrant } from "../model";
+import { API, graphqlOperation } from "aws-amplify";
 import { GraphQLResult } from "@aws-amplify/api-graphql";
-import { listRaces } from "../graphql/queries";
-import { createRace, createEntrant, deleteRace } from "../graphql/mutations";
+import { listRaces, listEntrants, getRace } from "../graphql/queries";
+import { createRace, createEntrant, deleteRace, updateRace, updateEntrant } from "../graphql/mutations";
 
 export type RaceService = {
   saveRace(race: Race): Promise<any>;
   deleteRace(race: Race): Promise<GraphQLResult>;
   fetchRaces(): Promise<Race[] | undefined>;
+  fetchEntrants(nextToken: string): Promise<RaceEntrant[] | undefined>;
+  fetchRace(raceId: string): Promise<Race | undefined>;
 };
 
 type RacesResponse = {
@@ -15,6 +17,16 @@ type RacesResponse = {
     items: Race[];
   };
 };
+type EntrantsResponse = {
+    listEntrants: {
+      items: RaceEntrant[];
+    };
+  };
+  type RaceResponse = {
+    getRace: {
+      item: Race;
+    };
+  };
 
 export function raceService(): RaceService {
   return {
@@ -31,16 +43,17 @@ export function raceService(): RaceService {
         name: race.name,
         seriesId: race.seriesId,
       };
-
+      const operation = !!race.createdAt ? updateRace : createRace;
       const foo = API.graphql({
-        query: createRace,
+        query: operation,
         variables: { input: updatedRace },
       }) as Promise<GraphQLResult>;
       foo.then((res) => {
         return Promise.all(
           entrants.map((ent) => {
+            const op = !!ent.createdAt ? updateEntrant : createEntrant;
             return API.graphql({
-              query: createEntrant,
+              query: op,
               variables: { input: ent },
             }) as Promise<GraphQLResult>;
           })
@@ -57,6 +70,26 @@ export function raceService(): RaceService {
       return apiData.data?.listRaces?.items;
     },
 
+    async fetchRace(id: string): Promise<Race | undefined> {  
+      console.warn('fetchRace ', id);
+
+      const apiData: GraphQLResult<RaceResponse> = (await API.graphql({
+        query: getRace,
+        variables: { id},
+      })) as GraphQLResult<RaceResponse>;
+      console.warn('fetched race', apiData.data);
+      return apiData.data?.getRace.item;
+    },
+
+    async fetchEntrants(raceID: string): Promise<RaceEntrant[] | undefined> {
+        const apiData: GraphQLResult<EntrantsResponse> = (await API.graphql(
+            graphqlOperation(listEntrants, {
+                raceID
+          }))) as GraphQLResult<EntrantsResponse>;
+    
+          return apiData.data?.listEntrants?.items;
+    },
+    
     async deleteRace(race: Race): Promise<GraphQLResult> {
         return API.graphql({
           query: deleteRace,

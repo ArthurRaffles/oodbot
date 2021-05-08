@@ -6,6 +6,8 @@ export type Race = {
     start: string;
     name: string;
     seriesId?: string;
+    createdAt?: string;
+    updatedAt?: string;
     entrants: RaceEntrant[];
 }
 

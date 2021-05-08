@@ -7,11 +7,23 @@ import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import clsx from "clsx";
+import { Link as RouterLink } from "react-router-dom";
 
 const createColumns = (onDelete: (raceId: string) => void): GridColDef[] => {
   console.warn("creating race list cols", onDelete);
   return [
-    { field: "name", headerName: "Name", width: 180 },
+    {
+      field: "name",
+      headerName: "Name",
+      width: 180,
+      renderCell: (params: GridCellParams) => (
+        <strong>
+          <RouterLink to={`/createRace?id=${params.id}`}>
+            {params.value}
+          </RouterLink>
+        </strong>
+      ),
+    },
     {
       field: "start",
       headerName: "Start Time",
@@ -47,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
   },
   fixedHeight: {
-    height: 240,
+    height: 500,
   },
 }));
 
@@ -69,7 +81,15 @@ export const RaceList = () => {
       <Grid item xs={12}>
         <Paper className={fixedHeightPaper}>
           <div style={{ height: 400, width: "100%" }}>
-            <DataGrid rows={races} columns={cols} pageSize={30} />
+            <DataGrid
+              rows={races}
+              columns={cols}
+              pageSize={30}
+              //   onRowSelected={(params) => {
+              //     console.warn("click", params.data);
+              //     useRouteMatch("/races");
+              //   }}
+            />
           </div>
         </Paper>
       </Grid>

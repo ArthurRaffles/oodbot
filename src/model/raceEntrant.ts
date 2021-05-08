@@ -10,6 +10,8 @@ export type RaceEntrant = {
   finishTime: string;
   elapsedSeconds?: number;
   correctedSeconds?: number;
+   createdAt?: string;
+    updatedAt?: string;
 };
 
 export namespace RaceEntrant {
