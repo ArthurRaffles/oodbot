@@ -1,15 +1,18 @@
 import * as React from "react";
 import { DataGrid, GridColDef, GridCellParams } from "@material-ui/data-grid";
-import { RaceContext } from "../../contexts";
-import { useContext } from "react";
+// import { RaceContext } from "../../contexts";
+// import { useContext } from "react";
 import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import clsx from "clsx";
 import { Link as RouterLink } from "react-router-dom";
+import { useAppSelector, useAppDispatch } from "../../hooks";
+import { selectRaces, deleteRace, fetchRaces } from "../../store/raceState";
+import { Race } from "../../model";
 
-const createColumns = (onDelete: (raceId: string) => void): GridColDef[] => {
+const createColumns = (onDelete: (race: Race) => void): GridColDef[] => {
   console.warn("creating race list cols", onDelete);
   return [
     {
@@ -41,7 +44,7 @@ const createColumns = (onDelete: (raceId: string) => void): GridColDef[] => {
             size="small"
             style={{ marginLeft: 16 }}
             onClick={() => {
-              return onDelete(params.value as string);
+              return onDelete(params.row as Race);
             }}
           >
             Delete
@@ -66,15 +69,23 @@ const useStyles = makeStyles((theme) => ({
 export const RaceList = () => {
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+  const dispatch = useAppDispatch();
+  // todo this is temporary
 
-  const { deleteRace, races, fetchRaces } = useContext(RaceContext);
-  fetchRaces();
-  console.warn("races", races);
+  const races = useAppSelector(selectRaces);
+
+  React.useMemo(() => {
+    if (!races || races.length === 0) {
+      dispatch(fetchRaces());
+    }
+  }, [races, dispatch]);
+
+  // console.warn("races", races);
 
   const cols = React.useMemo(() => {
-    const del = (raceId: string) => deleteRace(raceId);
+    const del = (race: Race) => dispatch(deleteRace(race));
     return createColumns(del);
-  }, [deleteRace]);
+  }, [dispatch]);
 
   return (
     <Grid container spacing={3}>

@@ -1,8 +1,8 @@
 import * as React from "react";
 import { DataGrid, GridColDef, GridCellParams } from "@material-ui/data-grid";
-import { RaceContext } from "../../contexts";
-import { useContext } from "react";
 import { Button } from "@material-ui/core";
+import { useAppSelector, useAppDispatch } from "../../hooks";
+import { selectedRace, deleteRacer } from "../../store/raceState";
 
 const createColumns = (onDelete: (entrantId: string) => void): GridColDef[] => {
   console.warn("creatig cols", onDelete);
@@ -49,15 +49,20 @@ const createColumns = (onDelete: (entrantId: string) => void): GridColDef[] => {
 };
 
 export default function RaceResultsView() {
-  const { selectedRace, deleteRacer } = useContext(RaceContext);
-  const entrants = selectedRace?.entrants ?? [];
+  const dispatch = useAppDispatch();
+  const race = useAppSelector(selectedRace);
+  const entrants = race?.entrants ?? [];
   console.warn("grid entrants", entrants);
 
   const cols = React.useMemo(() => {
-    const del = (entrantId: string) =>
-      deleteRacer(entrantId, selectedRace?.id ?? "");
+    const del = (entrantId: string) => {
+      if (race?.id) {
+       dispatch(deleteRacer({entrantId, raceId: race?.id }));
+      }
+    }
+   
     return createColumns(del);
-  }, [selectedRace?.id, deleteRacer]);
+  }, [dispatch, race?.id]);
 
   return (
     <div style={{ height: 400, width: "100%" }}>

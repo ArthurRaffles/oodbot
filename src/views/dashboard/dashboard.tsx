@@ -29,6 +29,8 @@ import {
   Link as RouterLink,
 } from "react-router-dom";
 import { RaceList } from "../raceList";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { setSelected } from "../../store/raceState";
 
 function Copyright() {
   return (
@@ -140,6 +142,9 @@ export function Dashboard() {
 const DashboardContent = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+
+  const dispatch = useAppDispatch();
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -159,7 +164,10 @@ const DashboardContent = () => {
     },
     {
       path: "/createRace",
-      main: () => <RaceTile />,
+      main: () => {
+        dispatch(setSelected(''));
+        return <RaceTile />
+      },
     },
   ];
   return (

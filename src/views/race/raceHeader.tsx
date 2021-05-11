@@ -34,7 +34,6 @@ export type RaceHeaderProps = {
   createRace: (name: string, start: string) => void;
 };
 export function RaceHeader({ race, saveRace, createRace }: RaceHeaderProps) {
-  // const { saveRace } = useContext(RaceContext);
   const [date, setDate] = React.useState(
     "2020-03-21T14:00"
     // DateTime.now().endOf("hour").minus(1).toFormat('yyyy-MM-ddThh:mm')
@@ -45,11 +44,9 @@ export function RaceHeader({ race, saveRace, createRace }: RaceHeaderProps) {
   // fetchRaces();
 
   const handleDateChange: React.EventHandler<any> = (event) => {
-    console.warn("setting date", event.target.value);
     setDate(event.target.value);
   };
   const handleNameChange: React.EventHandler<any> = (event) => {
-    console.warn("setting name", event.target.value);
     setName(event.target.value);
   };
 
@@ -77,7 +74,7 @@ export function RaceHeader({ race, saveRace, createRace }: RaceHeaderProps) {
   const isDisabled = !!race;
   const showCreate = !race && !!name && !!date;
   const showSave = !!race && race.entrants?.length > 0;
-  console.warn("race date", date, name);
+  console.warn("show save", showSave, race);
   return (
     <React.Fragment>
       <Title>Enter Race Details</Title>

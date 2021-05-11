@@ -6,6 +6,8 @@ import { RaceContext } from "../../contexts";
 import {
   useLocation
 } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { selectedRace, setSelected, createRace, addRacer, saveRace } from "../../store/raceState";
 const useStyles = makeStyles((theme) => ({
   container: {
     display: "flex",
@@ -19,31 +21,43 @@ function useQuery() {
 }
 export function Race() {
   const classes = useStyles();
-  const { addRacer, selectedRace, saveRace, createRace, selectRace } = useContext(
-    RaceContext
-  );
+  const dispatch = useAppDispatch();
+ 
+
+  // const { addRacer, selectedRace, saveRace, createRace, selectRace } = useContext(
+  //   RaceContext
+  // );
   const query = useQuery();
   const queries = new Map(query.entries());
   const raceId = queries.get('id');
-
-  // let race;
   if (raceId) {
-    selectRace(raceId);
+    dispatch(setSelected(raceId))
     
   }
+  const race = useAppSelector(selectedRace);
+  // let race;
+  // if (raceId) {
+  //   selectRace(raceId);
+  // }
 
-  const theRace = selectedRace;
-  console.warn('query', raceId, theRace);
+  // const theRace = selectedRace;
+  console.warn('query', raceId, raceId);
+  const onSaveRace = () => {
+    dispatch(saveRace(race));
+  };
+  const onCreateRace = (name: string, start: string) => {
+    dispatch(createRace({name, start}));
+  };
   return (
     <div className={classes.container}>
       <RaceHeader
-        saveRace={saveRace}
-        race={theRace}
-        createRace={createRace}
+        saveRace={onSaveRace}
+        race={race}
+        createRace={onCreateRace}
       />
-      {!!theRace && (
+      {!!race && (
         <EntrantInput
-          onChange={(entrant) => addRacer(entrant, theRace?.id)}
+          onChange={(entrant) => dispatch(addRacer({entrant, raceId: race?.id}))}
         />
       )}
     </div>
