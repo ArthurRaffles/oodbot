@@ -21,7 +21,7 @@ const createColumns = (onDelete: (race: Race) => void): GridColDef[] => {
       width: 180,
       renderCell: (params: GridCellParams) => (
         <strong>
-          <RouterLink to={`/createRace?id=${params.id}`}>
+          <RouterLink to={`/editRace?id=${params.id}`}>
             {params.value}
           </RouterLink>
         </strong>

@@ -1,20 +1,22 @@
-import { Race, RaceEntrant } from "../model";
-import { API, graphqlOperation } from "aws-amplify";
+import { Race } from "../model";
+import { API } from "aws-amplify";
 import { GraphQLResult } from "@aws-amplify/api-graphql";
-import { listRaces, listEntrants, getRace } from "../graphql/queries";
+import { listRaces, getRace } from "../graphql/queries";
 import {
   createRace,
   createEntrant,
   deleteRace,
   updateRace,
   updateEntrant,
+  deleteEntrant,
 } from "../graphql/mutations";
+import { RaceDto } from "./dtos";
+import { mapToRace } from "./mappers";
 
 export type RaceService = {
   saveRace(race: Race): Promise<any>;
   deleteRace(race: Race): Promise<GraphQLResult>;
   fetchRaces(): Promise<Race[] | undefined>;
-  fetchEntrants(nextToken: string): Promise<RaceEntrant[] | undefined>;
   fetchRace(raceId: string): Promise<Race | undefined>;
 };
 
@@ -23,15 +25,9 @@ type RacesResponse = {
     items: Race[];
   };
 };
-type EntrantsResponse = {
-  listEntrants: {
-    items: RaceEntrant[];
-  };
-};
+
 type RaceResponse = {
-  getRace: {
-    item: Race;
-  };
+  getRace: RaceDto;
 };
 
 export function raceService(): RaceService {
@@ -68,43 +64,48 @@ export function raceService(): RaceService {
       return foo;
     },
 
+    async deleteRace(race: Race): Promise<GraphQLResult> {
+      return this.fetchRace(race.id).then((raceFromServer) => {
+        console.warn("deleteRace fetch race first ", raceFromServer);
+        if (!raceFromServer) {
+          return Promise.reject(`didn't find the race to delete: ${race?.id}`);
+        }
+        return Promise.all(
+          raceFromServer.entrants.map((ent) => {
+            return API.graphql({
+              query: deleteEntrant,
+              variables: { input: { id: ent.id } },
+            }) as Promise<GraphQLResult>;
+          })
+        ).then((resw) => {
+          return API.graphql({
+            query: deleteRace,
+            variables: { input: { id: race.id } },
+          }) as Promise<GraphQLResult>;
+        });
+      });
+    },
+
     async fetchRaces(): Promise<Race[] | undefined> {
       const apiData: GraphQLResult<RacesResponse> = (await API.graphql({
         query: listRaces,
       })) as GraphQLResult<RacesResponse>;
 
-      return apiData.data?.listRaces?.items;
+      return apiData.data?.listRaces?.items?.map((r) => ({
+        ...r,
+        entrants: [],
+      }));
     },
 
     async fetchRace(id: string): Promise<Race | undefined> {
-      console.warn("fetchRace ", id);
-
-      const apiData: GraphQLResult<RaceResponse> = (await API.graphql({
+      console.warn("fetching Race ", id);
+      return (API.graphql({
         query: getRace,
         variables: { id },
-      })) as GraphQLResult<RaceResponse>;
-      console.warn("fetched race", apiData.data);
-      return apiData.data?.getRace.item;
-    },
-
-    async fetchEntrants(raceID: string): Promise<RaceEntrant[] | undefined> {
-      const apiData: GraphQLResult<EntrantsResponse> = (await API.graphql(
-        graphqlOperation(listEntrants, {
-          raceID,
-        })
-      )) as GraphQLResult<EntrantsResponse>;
-
-      return apiData.data?.listEntrants?.items;
-    },
-
-    async deleteRace(race: Race): Promise<GraphQLResult> {
-      const foo =  API.graphql(
-        graphqlOperation(deleteRace, {
-          raceID: race.id,
-        })
-      ) as Promise<GraphQLResult>;
-      foo.catch(reason => console.warn('del failed', reason));
-      return foo;
+      }) as Promise<GraphQLResult<RaceResponse>>).then((apiData) => {
+        console.warn("fetched race", apiData.data);
+        return mapToRace(apiData.data?.getRace);
+      });
     },
   };
 }

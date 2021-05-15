@@ -1,1 +1,1 @@
-export * from './race';
+export * from './raceInput';

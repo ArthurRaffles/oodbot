@@ -21,7 +21,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import { PyContextProvider, RaceContextProvider } from "../../contexts";
-import { RaceTile } from "../raceTile";
+import { EditRaceTile, RaceTile } from "../raceTile";
 import {
   BrowserRouter as Router,
   Switch,
@@ -29,8 +29,8 @@ import {
   Link as RouterLink,
 } from "react-router-dom";
 import { RaceList } from "../raceList";
-import { useAppDispatch, useAppSelector } from "../../hooks";
-import { setSelected } from "../../store/raceState";
+import { useAppDispatch } from "../../hooks";
+import { setSelectedRace } from "../../store/raceState";
 
 function Copyright() {
   return (
@@ -151,7 +151,6 @@ const DashboardContent = () => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
   const routes = [
     {
       path: "/",
@@ -165,8 +164,13 @@ const DashboardContent = () => {
     {
       path: "/createRace",
       main: () => {
-        dispatch(setSelected(''));
         return <RaceTile />
+      },
+    },
+    {
+      path: "/editRace",
+      main: () => {
+        return <EditRaceTile />
       },
     },
   ];
