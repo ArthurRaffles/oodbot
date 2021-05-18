@@ -1,4 +1,3 @@
-
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { calculateAdjustedTime, Race, RaceEntrant } from "../../model";
 import { raceService } from "../../services";
@@ -28,10 +27,13 @@ export const fetchRaces = createAsyncThunk("raceState/fetchRaces", async () => {
   return response;
 });
 
-export const fetchRace = createAsyncThunk("raceState/fetchRace", async (raceId: string) => {
-  const response = await raceServiceApi.fetchRace(raceId);
-  return response;
-});
+export const fetchRace = createAsyncThunk(
+  "raceState/fetchRace",
+  async (raceId: string) => {
+    const response = await raceServiceApi.fetchRace(raceId);
+    return response;
+  }
+);
 
 export const deleteRace = createAsyncThunk(
   "raceState/deleteRace",
@@ -99,22 +101,27 @@ export const racesSlice = createSlice({
           ...state.races[raceIdx].entrants,
           updatedEntrant,
         ];
-        state.selectedRace = state.races[raceIdx];
+        state.selectedRace?.entrants.push(entrant);
       }
     },
     deleteRacer: (state, action: PayloadAction<DeleteEntrant>) => {
-      const raceIdx = state.races.findIndex(
-        (race) => race.id === action.payload.raceId
-      );
-      if (raceIdx > -1) {
-        console.warn("deleting entrant", action.payload);
-        state.races[raceIdx].entrants = [
-          ...state.races[raceIdx].entrants.filter(
-            (ent) => ent.id !== action.payload.entrantId
-          ),
-        ];
-        state.selectedRace = state.races[raceIdx];
+      // const raceIdx = state.races.findIndex(
+      //   (race) => race.id === action.payload.raceId
+      // );
+      if (state.selectedRace) {
+        state.selectedRace.entrants = state.selectedRace?.entrants?.filter(
+          (ent) => ent.id !== action.payload.entrantId
+        );
       }
+      // if (raceIdx > -1) {
+      //   console.warn("deleting entrant", action.payload);
+      //   state.races[raceIdx].entrants = [
+      //     ...state.races[raceIdx].entrants.filter(
+      //       (ent) => ent.id !== action.payload.entrantId
+      //     ),
+      //   ];
+
+      // }
     },
   },
   extraReducers: (builder) => {

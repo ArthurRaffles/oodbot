@@ -1,4 +1,4 @@
-import { Race } from "../model";
+import { Race, RaceEntrant } from "../model";
 import { API } from "aws-amplify";
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { listRaces, getRace } from "../graphql/queries";
@@ -33,12 +33,7 @@ type RaceResponse = {
 export function raceService(): RaceService {
   return {
     async saveRace(race: Race): Promise<any> {
-      const entrants = race.entrants.map((entant) => {
-        return {
-          ...entant,
-          raceID: race.id,
-        };
-      });
+
       const updatedRace = {
         id: race.id,
         start: race.start,
@@ -52,11 +47,21 @@ export function raceService(): RaceService {
       }) as Promise<GraphQLResult>;
       foo.then((res) => {
         return Promise.all(
-          entrants.map((ent) => {
-            const op = !!ent.createdAt ? updateEntrant : createEntrant;
+          race.entrants.map((entrant) => {
+            const updatedEnt = {
+              id: entrant.id,
+              boatClass: entrant.boatClass,
+              finishTime: entrant.finishTime,
+              fullname: entrant.fullname,
+              py: entrant.py,
+              correctedSeconds: entrant.correctedSeconds,
+              elapsedSeconds: entrant.elapsedSeconds,
+              raceID: race.id,
+            } as RaceEntrant;
+            const op = !!entrant.createdAt ? updateEntrant : createEntrant;
             return API.graphql({
               query: op,
-              variables: { input: ent },
+              variables: { input: updatedEnt },
             }) as Promise<GraphQLResult>;
           })
         );
